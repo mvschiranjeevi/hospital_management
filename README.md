@@ -30,7 +30,7 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/all3n2601/HMSMern.git
+   git clone https://github.com/mvschiranjeevi/hospital_management.git
    ```
 2. **Navigate to the project directory:
 
@@ -52,17 +52,4 @@ Before you begin, ensure you have the following installed:
    ```bash
    npm run dev
    ```
-
-## Contributing
-
-We welcome contributions! Please follow our contribution guidelines.
-
-## License
-This project is licensed under the MIT License.
-
-## Acknowledgments
-Thanks to the MERN and Redux TailwindCSS communities for their amazing tools and resources.
-
-## Contact
-For any inquiries or issues, please contact [allsurej@gmail.com].
 

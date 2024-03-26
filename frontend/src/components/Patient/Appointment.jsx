@@ -194,7 +194,7 @@ function Appointment() {
                   <input
                     className=" h-10 w-[300px] rounded-md border border-black/30 bg-transparent px-3 py-2 text-sm placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-black/30 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                     type="email"
-                    placeholder="Enter Email"
+                    placeholder="Enter City Name"
                     onChange={(e) =>
                       setAppointment({ ...appointment, city: e.target.value })
                     }

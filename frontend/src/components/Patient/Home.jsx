@@ -205,17 +205,16 @@ function Home() {
           </div>
         </div>
       </motion.section>
-      <motion.section
+      {/* <motion.section
         ref={ref}
         initial={{ opacity: 0 }}
         animate={{ opacity: inView ? 1 : 0 }}
         transition={{ duration: 1.5 }}
         whileInView={{ opacity: 1 }}
-      >
-        <div className="h-full max-w-7xl flex flex-col m-auto justify-center items-center overflow-auto">
+      > */}
+        {/* <div className="h-full max-w-7xl flex flex-col m-auto justify-center items-center overflow-auto">
           <p className="font-semibold text-3xl pt-16">Meet Our Specialist</p>
           <div className="flex flex-col gap-2">
-            {/* from here */}
 
             <div className="flex gap-3 ">
               <div className="w-[270px] h-[300px] border border-gray-200 rounded-lg bg-[#D4A373] shadow flex justify-center">
@@ -391,8 +390,8 @@ function Home() {
               </div>
             </div>
           </div>
-        </div>
-      </motion.section>
+        </div> */}
+      {/* </motion.section> */}
       <section>
         <div className=" max-w-7xl m-auto flex flex-col justify-center gap-8 items-center w-full h-full overflow-auto ">
           <motion.div
@@ -491,12 +490,16 @@ function Home() {
                 </p>
               </div>
             </div>
+        
           </motion.div>
+          <div className=" hidden lg:flex h-full  max-w-7xl m-auto flex-col items-center justify-end ">
+          <Footer />
         </div>
+        </div>
+
       </section>
-      <section>
-        <div className="absolute lg:m-56 md:m-36 sm:m-24 m-20 overflow-hidden">
-          {/* newsletter */}
+      {/* <section>
+        { <div className="absolute lg:m-56 md:m-36 sm:m-24 m-20 overflow-hidden">
           <motion.div
             ref={ref}
             initial={{ opacity: 0, x: -50 }}
@@ -597,12 +600,9 @@ function Home() {
             </div>
           </motion.div>
 
-          {/* newsletter */}
-        </div>
-        <div className=" hidden lg:flex h-full  max-w-7xl m-auto flex-col items-center justify-end ">
-          <Footer />
-        </div>
-      </section>
+        </div> }
+
+      </section> */}
     </div>
   );
 }
