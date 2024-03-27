@@ -64,7 +64,7 @@ function DoctorAppointmen() {
                           {index + 1}
                         </td>
                         <td scope="col" className="px-6 py-3">
-                          {item.patient}
+                          {item.patientName}
                         </td>
                         <td scope="col" className="px-6 py-3">
                           {item.appointmentDate}

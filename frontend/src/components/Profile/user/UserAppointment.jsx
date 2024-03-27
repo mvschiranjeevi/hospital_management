@@ -7,7 +7,7 @@ import UserSidebar from "./UserSidebar";
 
 function UserAppointment() {
   const [appointments, setAppointments] = useState([]);
-  const [userData, setuserData] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const colorForStatus = (status) => {
     switch (status) {
@@ -26,68 +26,111 @@ function UserAppointment() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    setuserData(user);
-    const email = user.email;
-    const fetchAppointments = async (email) => {
-      await axios
-        .get(`http://localhost:4451/appointment/get-appointments/${email}`)
-        .then((res) => {
-          setAppointments(res.data);
-        })
-        .catch((err) => {
-          Swal.fire({
-            title: "Error",
-            icon: "error",
-            confirmButtonText: "Ok",
-            text: "Error Fetching Appointments! Please Try Again!",
-          });
+    console.log(user);
+    setUserData(user);
+    const id = user._id;
+    const fetchAppointments = async (id) => {
+      try {
+        const res = await axios.get(
+          `http://localhost:4451/appointment/get-appointments/${id}`
+        );
+        setAppointments(res.data);
+        console.log(res.data);
+      } catch (error) {
+        Swal.fire({
+          title: "Error",
+          icon: "error",
+          confirmButtonText: "Ok",
+          text: "Error Fetching Appointments! Please Try Again!",
         });
+      }
     };
 
-    fetchAppointments(email);
+    fetchAppointments(id);
   }, []);
+
   return (
-    <section className="flex items-center justify-center bg-slate-300">
-      <div className="flex h-[80%] w-[80%] bg-white p-2 shadow-xl">
+    <section className="bg-slate-300 flex justify-center items-center">
+      <div className="h-[80%] w-[80%] bg-white shadow-xl p-2 flex">
         <UserSidebar profiePic={profiePic} userName={userData.userName} />
-        <div>
-          <div className="flex flex-col gap-4 p-4">
-            <h1 className="text-3xl font-medium">Appointments</h1>
-            <div className="flex flex-col gap-4">
-              {appointments.map((appointment, index) => {
-                const appointmentDate = new Date(appointment.appointmentDate);
-                const formattedDate = appointmentDate.toLocaleString("en-US", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                });
-                return (
-                  <div className="flex flex-col m-5 ml-10 gap-4" key={index}>
-                    <div className="flex gap-4 justify-between">
-                      <p className="text-lg font-medium">
-                        Doctor : {appointment.doctor.name}
-                      </p>
-                      <p className="text-lg font-medium">
-                        {" "}
-                        Date and Time : {formattedDate}
-                      </p>
-                    </div>
-                    <div className="flex justify-between">
-                      <p className="text-lg ">Reason : {appointment.reason}</p>
-                      <p className="text-lg font-medium">
-                        Status of Appointment:
-                        <p className={`${colorForStatus(appointment.status)}`}>
-                          {appointment.status}
-                        </p>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+        <div
+          className=" w-[70%] ms-24 p-4  flex flex-col justify-start gap-5 "
+          style={{ alignItems: "center", paddingTop: "4rem" }}
+        >
+          <p className="font-semibold text-3xl">Appointmnets</p>
+          <div className="w-full">
+            <div className="relative overflow-auto shadow-md sm:rounded-lg">
+              <table className="w-full text-sm text-left rtl:text-right">
+                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      #
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Doctor Name
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Appointment Date
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Reason
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {!appointments.length > 0 ? (
+                    <tr>
+                      <td colSpan="6">
+                        <div style={{ padding: "1rem" }}>
+                          <p style={{ alignItems: "center" }}>
+                            Appointments are not scheduled
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (
+                    appointments.map((appointment, index) => {
+                      const appointmentDate = new Date(
+                        appointment.appointmentDate
+                      );
+                      const formattedDate = appointmentDate.toLocaleString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                          second: "numeric",
+                        }
+                      );
+                      return (
+                        <tr key={index}>
+                          <td scope="col" className="px-6 py-3">
+                            {index + 1}
+                          </td>
+                          <td scope="col" className="px-6 py-3">
+                            {appointment.doctorName}
+                          </td>
+                          <td scope="col" className="px-6 py-3">
+                            {formattedDate}
+                          </td>
+                          <td scope="col" className="px-6 py-3">
+                            {appointment.reason}
+                          </td>
+                          <td scope="col" className="px-6 py-3">
+                            {appointment.status}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

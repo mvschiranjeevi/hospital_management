@@ -3,25 +3,29 @@ const Schema = mongoose.Schema;
 
 const appointmentSchema = new Schema({
   doctor: {
-    type:String,
+    type: mongoose.Schema.ObjectId,
     required: true,
   },
   patient: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
     required: true,
   },
   appointmentDate: {
     type: String,
     required: true,
   },
-  time:{
+  time: {
     type: String,
     default: "",
   },
   reason: {
     type: String,
   },
-  phone:{
+  phone: {
+    type: String,
+    required: true,
+  },
+  gender: {
     type: String,
     required: true,
   },
@@ -34,11 +38,15 @@ const appointmentSchema = new Schema({
     type: String,
   },
 
-  email:{
+  email: {
     type: String,
     required: true,
-  }
+  },
 });
 
-const Appointment = mongoose.model('Appointment', appointmentSchema, 'appointments');
+const Appointment = mongoose.model(
+  "Appointment",
+  appointmentSchema,
+  "appointments"
+);
 module.exports = Appointment;

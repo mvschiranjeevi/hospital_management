@@ -7,6 +7,7 @@ const User = require("../models/user.js");
 const config = require("config");
 const Doctor = require("../models/doctor.js");
 const Nurse = require("../models/nurse.js");
+const verifyUser = require("../middlewares/verifyUser.js");
 require("dotenv/config");
 
 // const verifyUser = (req, res, next) => {
@@ -127,6 +128,20 @@ router.post("/login", async (req, res) => {
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.json({ message: "User Logged Out" });
+});
+
+router.get("/loggedIn", verifyUser, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    console.log(user);
+    if (user) {
+      res.status(200).json({ user });
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // router.post("/google-login", async (req, res) => {
