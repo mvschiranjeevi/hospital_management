@@ -27,6 +27,38 @@ function AdminPatient() {
     fetchData();
   }, []);
 
+  const deletePatient = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed deletion
+        axios
+          .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
+          .then((res) => {
+            Swal.fire({
+              title: "Success",
+              icon: "success",
+              text: "Patient Deleted Successfully!",
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error",
+              icon: "error",
+              text: "Error Deleting Patient!",
+            });
+          });
+      }
+      // If result.isConfirmed is false, user clicked "Cancel"
+    });
+  };
   if (!users) {
     return <Loader />;
   }
@@ -54,6 +86,9 @@ function AdminPatient() {
                     <th scope="col" className="px-6 py-3">
                       Role
                     </th>
+                    <th scope="col" className="px-6 py-3">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -71,6 +106,30 @@ function AdminPatient() {
                         </td>
                         <td scope="col" className="px-6 py-3">
                           {item.role}
+                        </td>
+                        <td scope="col" className="d-flex gap-3 ">
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <button
+                              as="link"
+                              onClick={() => {
+                                deletePatient(item._id);
+                              }}
+                              className="btn btn-danger"
+                              style={{
+                                backgroundColor: "red",
+                                color: "white",
+                                padding: "0.5rem",
+                                borderRadius: "1rem",
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

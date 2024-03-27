@@ -85,22 +85,36 @@ function AdminDoctor() {
   };
 
   const deletePatient = async (id) => {
-    await axios
-      .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
-      .then((res) => {
-        Swal.fire({
-          title: "Success",
-          icon: "success",
-          text: "Patient Deleted Successfully!",
-        });
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error",
-          icon: "error",
-          text: "Error Deleting Patient!",
-        });
-      });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed deletion
+        axios
+          .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
+          .then((res) => {
+            Swal.fire({
+              title: "Success",
+              icon: "success",
+              text: "Patient Deleted Successfully!",
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error",
+              icon: "error",
+              text: "Error Deleting Patient!",
+            });
+          });
+      }
+      // If result.isConfirmed is false, user clicked "Cancel"
+    });
   };
 
   const handleCreate = () => {
@@ -156,14 +170,28 @@ function AdminDoctor() {
                           {item.specialization}
                         </td>
                         <td scope="col" className="d-flex gap-3 ">
-                          <button
-                            onClick={() => {
-                              deletePatient(item._id);
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
                             }}
-                            className="btn btn-danger"
                           >
-                            Remove
-                          </button>
+                            <button
+                              as="link"
+                              onClick={() => {
+                                deletePatient(item._id);
+                              }}
+                              className="btn btn-danger"
+                              style={{
+                                backgroundColor: "red",
+                                color: "white",
+                                padding: "0.5rem",
+                                borderRadius: "1rem",
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}

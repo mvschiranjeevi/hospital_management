@@ -63,7 +63,12 @@ function AdminQuery() {
                   </tr>
                 </thead>
                 <tbody>
-                  {contacts &&
+                  {contacts.length === 0 ? (
+                    <div style={{ padding: "0.5rem" }}>
+                      <p>No Queries available !!</p>
+                    </div>
+                  ) : (
+                    contacts &&
                     contacts.map((item, index) => (
                       <tr key={item._id} className="text-black">
                         <td scope="col" className="px-3 py-4">
@@ -92,7 +97,8 @@ function AdminQuery() {
                           </button>
                         </td>
                       </tr>
-                    ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

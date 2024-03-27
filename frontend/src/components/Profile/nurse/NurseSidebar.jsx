@@ -39,31 +39,31 @@ const NurseSidebar = ({ profilePic, userName }) => {
         <div className="flex flex-col items-start w-full gap-4 ">
           <NavLink
             style={navLinkStyle}
-            className={"w-full  p-2 h-[40px] "}
+            className={"w-full  p-2 h-[40px] rounded "}
             to="/nurse-profile"
           >
             Settings
           </NavLink>
           <NavLink
             style={navLinkStyle}
-            className={"w-full  p-2 h-[40px] "}
+            className={"w-full  p-2 h-[40px] rounded"}
             to="/nurse-medication"
           >
             Medication
           </NavLink>
           <NavLink
             style={navLinkStyle}
-            className={"w-full p-2 h-[40px] "}
+            className={"w-full p-2 h-[40px] rounded"}
             to="/nurse-bed"
           >
             Messages
           </NavLink>
         </div>
       </div>
-      <div className="w-full text-center  h-[80px] p-2">
+      <div className="w-full text-center">
         <button
           onClick={handleSignOut}
-          className="bg-black text-white rounded-full text-md font-medium p-2 cursor-pointer hover:scale-110 duration-200 active:scale-90 "
+          className="bg-black text-white rounded-full text-md font-medium p-2 w-full cursor-pointer hover:bg-gray-800 transition-colors duration-200"
         >
           Sign Out
         </button>
