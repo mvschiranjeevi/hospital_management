@@ -91,19 +91,20 @@ function AdminNurse() {
       if (result.isConfirmed) {
         // User confirmed deletion
         axios
-          .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
+          .delete(`http://localhost:4451/admin/delete-nurse/${id}`)
           .then((res) => {
             Swal.fire({
               title: "Success",
               icon: "success",
-              text: "Patient Deleted Successfully!",
+              text: "Nurse Deleted Successfully!",
             });
+            window.location.reload();
           })
           .catch((err) => {
             Swal.fire({
               title: "Error",
               icon: "error",
-              text: "Error Deleting Patient!",
+              text: "Error Deleting Nurse!",
             });
           });
       }
@@ -179,7 +180,7 @@ function AdminNurse() {
                               }}
                               className="btn btn-danger"
                               style={{
-                                backgroundColor: "red",
+                                backgroundColor: "#FF7F7F",
                                 color: "white",
                                 padding: "0.5rem",
                                 borderRadius: "1rem",

@@ -6,6 +6,19 @@ const checkAdmin = require("../middlewares/checkAdmin");
 const Appointment = require("../models/appointment");
 const Communication = require("../models/communication");
 
+router.get("/doctor-details/:doctorId", async (req, res) => {
+  const { doctorId } = req.params;
+  try {
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ error: "Doctor not found" });
+    }
+    res.json(doctor);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.get("/get-doctors", async (req, res) => {
   try {
     const doctors = await Doctor.find();
@@ -17,6 +30,7 @@ router.get("/get-doctors", async (req, res) => {
 
 router.put("/profile-update", async (req, res) => {
   const { userId, updatedProfile } = req.body;
+  console.log(updatedProfile);
   try {
     const updatedUser = await Doctor.findByIdAndUpdate(
       userId,

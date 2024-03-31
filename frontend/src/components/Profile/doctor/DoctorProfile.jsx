@@ -15,6 +15,30 @@ function DoctorProfile() {
   const [dateOfBirth, setdateofBirth] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let tempErrors = {};
+    tempErrors.name = name ? "" : "Name is required.";
+    tempErrors.email = email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+      ? ""
+      : "Email is not valid.";
+    tempErrors.mobileNumber = mobileNumber.match(/^\d{10}$/)
+      ? ""
+      : "Phone number is not valid.";
+    tempErrors.dateOfBirth = dateOfBirth ? "" : "Date of Birth is required.";
+    tempErrors.gender = gender ? "" : "Gender is required.";
+    tempErrors.city = city ? "" : "City is required.";
+    tempErrors.state = state ? "" : "State is required.";
+    tempErrors.address = address ? "" : "Address is required.";
+    tempErrors.description = description ? "" : "Description is required.";
+
+    // Add other validations as needed
+
+    setErrors({ ...tempErrors });
+    return Object.values(tempErrors).every((x) => x === "");
+  };
 
   useEffect(() => {
     const fetchInfo = async (e) => {
@@ -29,6 +53,7 @@ function DoctorProfile() {
       setdateofBirth(formattedDateOfBirth);
       setGender(user.gender || "");
       setEmail(user.email || "");
+      setDescription(user.description || "");
     };
 
     fetchInfo();
@@ -36,49 +61,59 @@ function DoctorProfile() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      axios
-        .put("http://localhost:4451/doctor/profile-update", {
-          userId: userData._id,
-          updatedProfile: {
-            email: email,
-            name: name,
-            phoneno: mobileNumber,
-            address: {
-              street: address,
-              city: city,
-              state: state,
+    if (validateForm()) {
+      try {
+        axios
+          .put("http://localhost:4451/doctor/profile-update", {
+            userId: userData._id,
+            updatedProfile: {
+              description: description,
+              email: email,
+              name: name,
+              phoneno: mobileNumber,
+              address: {
+                street: address,
+                city: city,
+                state: state,
+              },
+              gender: gender,
+              dob: dateOfBirth,
             },
-            gender: gender,
-            dob: dateOfBirth,
-          },
-        })
-        .then((res) => {
-          if (res.data.status === "Success") {
-            Swal.fire({
-              title: "Success",
-              icon: "success",
-              confirmButtonText: "Ok",
-              text: "Profile Updated Successfully!",
-            });
-            const user = res.data.user;
-            localStorage.setItem("user", JSON.stringify(user));
-            window.location.href = "/doctor-profile";
-          }
+          })
+          .then((res) => {
+            if (res.data.status === "Success") {
+              Swal.fire({
+                title: "Success",
+                icon: "success",
+                confirmButtonText: "Ok",
+                text: "Profile Updated Successfully!",
+              });
+              const user = res.data.user;
+              localStorage.setItem("user", JSON.stringify(user));
+              window.location.href = "/doctor-profile";
+            }
+          });
+      } catch (err) {
+        Swal.fire({
+          title: "Error",
+          icon: "error",
+          confirmButtonText: "Ok",
+          text: "Error Updating Profile! Please Try Again!",
         });
-    } catch (err) {
+      }
+    } else {
       Swal.fire({
         title: "Error",
         icon: "error",
         confirmButtonText: "Ok",
-        text: "Error Updating Profile! Please Try Again!",
+        text: "Please fix the errors in the form before submitting.",
       });
     }
   };
 
   return (
     <section className="bg-slate-300 flex justify-center items-center">
-      <div className="h-[80%] w-[80%] bg-white shadow-xl p-2 flex">
+      <div className="h-[100%] w-[100%] bg-white shadow-xl p-2 flex">
         <DoctorSidebar userName={userData.name} profilePic={profiePic} />
         <div className=" w-[70%] ms-24 p-4 flex flex-col justify-around ">
           <p className="font-semibold text-3xl">Account Settings</p>
@@ -93,6 +128,7 @@ function DoctorProfile() {
                   type="text"
                   placeholder="Name"
                 ></input>
+                <ErrorMessage>{errors.name}</ErrorMessage>
               </div>
               <div className="flex flex-col w-[50%] justify-start">
                 <p>Enter Your Email:</p>
@@ -103,7 +139,18 @@ function DoctorProfile() {
                   type="email"
                   placeholder="Email"
                 ></input>
+                <ErrorMessage>{errors.email}</ErrorMessage>
               </div>
+            </div>
+            <div className="w-full justify-between">
+              <p>Enter your Description</p>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="flex h-20 w-[95%] rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                placeholder="Description"
+              />
+              <ErrorMessage>{errors.description}</ErrorMessage>
             </div>
             <div className="w-full flex justify-between">
               <div className="flex flex-col w-[50%] justify-start">
@@ -115,6 +162,7 @@ function DoctorProfile() {
                   type="text"
                   placeholder="Phone"
                 ></input>
+                <ErrorMessage>{errors.mobileNumber}</ErrorMessage>
               </div>
               <div className="flex flex-col w-[50%] justify-start">
                 <p>Enter Your DOB:</p>
@@ -125,6 +173,7 @@ function DoctorProfile() {
                   type="date"
                   placeholder="Name"
                 ></input>
+                <ErrorMessage>{errors.dateOfBirth}</ErrorMessage>
               </div>
             </div>
 
@@ -138,6 +187,7 @@ function DoctorProfile() {
                   type="text"
                   placeholder="Male/Female/Others"
                 ></input>
+                <ErrorMessage>{errors.gender}</ErrorMessage>
               </div>
               <div className="flex flex-col w-[50%] justify-start">
                 <p>Enter Your City:</p>
@@ -148,6 +198,7 @@ function DoctorProfile() {
                   type="text"
                   placeholder="City"
                 ></input>
+                <ErrorMessage>{errors.city}</ErrorMessage>
               </div>
             </div>
             <div className="w-full flex justify-between">
@@ -160,6 +211,7 @@ function DoctorProfile() {
                   type="text"
                   placeholder="State"
                 ></input>
+                <ErrorMessage>{errors.state}</ErrorMessage>
               </div>
               <div className="flex flex-col w-[50%] justify-start">
                 <p>Enter Your Address:</p>
@@ -170,8 +222,10 @@ function DoctorProfile() {
                   type="text"
                   placeholder="Address"
                 ></input>
+                <ErrorMessage>{errors.address}</ErrorMessage>
               </div>
             </div>
+
             <button
               onClick={handleUpdate}
               className="bg-black w-[95%] text-white p-2 rounded-full"
@@ -184,5 +238,7 @@ function DoctorProfile() {
     </section>
   );
 }
-
+const ErrorMessage = ({ children }) => {
+  return <div className="text-red-500 text-xs">{children}</div>;
+};
 export default DoctorProfile;

@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/UserSlice.js";
-import docProfile from "../../../assets/doct2.jpg";
+import docProfile from "../../../assets/doctor.jpg";
 const DoctorSidebar = ({ profilePic, userName }) => {
   const navLinkStyle = ({ isActive }) => {
     return {
@@ -32,7 +32,7 @@ const DoctorSidebar = ({ profilePic, userName }) => {
         <div className="w-full flex flex-col items-center gap-3">
           <img
             src={docProfile}
-            className="size-24 rounded-full"
+            className="size-40 rounded-full"
             alt="profile"
           />
           <p>{userName}</p>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import profiePic from "../../../assets/doct2.jpg";
+import profiePic from "../../../assets/doctor.jpg";
 import axios from "axios";
 import Swal from "sweetalert2";
 import DoctorSidebar from "./DoctorSidebar";
+import AppointmentConfig from "./DoctorAppiontmentTime";
 import { useSelector } from "react-redux";
 
 function DoctorAppointmen() {
@@ -28,12 +29,16 @@ function DoctorAppointmen() {
 
   return (
     <section className="bg-slate-300 flex justify-center items-center">
-      <div className="h-[80%] w-[80%] bg-white shadow-xl p-2 flex">
+      <div className="h-[100%] w-[100%] bg-white shadow-xl p-2 flex">
         <DoctorSidebar userName={currentUser.name} profiePic={profiePic} />
         <div className=" w-[70%] ms-24 p-4 flex flex-col justify-start gap-5 ">
           <p className="font-semibold text-3xl">Appointments</p>
           <div className="w-full">
+            <AppointmentConfig doctorId={currentUser._id} />
             <div className="relative overflow-auto shadow-md sm:rounded-lg">
+              <p style={{ fontWeight: "bold", fontSize: "20px" }}>
+                My Booked Appiontmentns
+              </p>
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>

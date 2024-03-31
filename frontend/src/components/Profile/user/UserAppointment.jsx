@@ -48,6 +48,47 @@ function UserAppointment() {
 
     fetchAppointments(id);
   }, []);
+  function convertTo12Hour(timeString) {
+    const [hours24, minutes] = timeString.split(":");
+    const hours = parseInt(hours24, 10);
+    const suffix = hours >= 12 ? "PM" : "AM";
+    const hours12 = ((hours + 11) % 12) + 1; // Convert 24-hour time to 12-hour time
+    return `${hours12}:${minutes} ${suffix}`;
+  }
+
+  const deleteAppointment = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed deletion
+        axios
+          .delete(`http://localhost:4451/appointment/delete-appointment/${id}`)
+          .then((res) => {
+            Swal.fire({
+              title: "Success",
+              icon: "success",
+              text: "Appointment Deleted Successfully!",
+            });
+            window.location.reload();
+          })
+          .catch((err) => {
+            Swal.fire({
+              title: "Error",
+              icon: "error",
+              text: "Error Deleting Appointment!",
+            });
+          });
+      }
+      // window.location.reload();
+    });
+  };
 
   return (
     <section className="bg-slate-300 flex justify-center items-center">
@@ -73,10 +114,16 @@ function UserAppointment() {
                       Appointment Date
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Appointment Time
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Reason
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Status
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Action
                     </th>
                   </tr>
                 </thead>
@@ -94,7 +141,7 @@ function UserAppointment() {
                   ) : (
                     appointments.map((appointment, index) => {
                       const appointmentDate = new Date(
-                        appointment.appointmentDate
+                        appointment.timeDetails.date
                       );
                       const formattedDate = appointmentDate.toLocaleString(
                         "en-US",
@@ -103,9 +150,6 @@ function UserAppointment() {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          second: "numeric",
                         }
                       );
                       return (
@@ -120,10 +164,37 @@ function UserAppointment() {
                             {formattedDate}
                           </td>
                           <td scope="col" className="px-6 py-3">
+                            {convertTo12Hour(appointment.timeDetails.time)}
+                          </td>
+                          <td scope="col" className="px-6 py-3">
                             {appointment.reason}
                           </td>
                           <td scope="col" className="px-6 py-3">
                             {appointment.status}
+                          </td>
+                          <td scope="col" className="d-flex gap-3 ">
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <button
+                                as="link"
+                                onClick={() => {
+                                  deleteAppointment(appointment._id);
+                                }}
+                                className="btn btn-danger"
+                                style={{
+                                  backgroundColor: "#FF7F7F",
+                                  color: "white",
+                                  padding: "0.5rem",
+                                  borderRadius: "1rem",
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
