@@ -27,6 +27,28 @@ function NurseAuth() {
   const loading = useSelector((state) => state.user.loading);
 
   const [isPassVisible, setIsPassVisible] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let tempErrors = {};
+    const emailRegex = /\S+@\S+\.\S+/; // Simple regex for email validation
+
+    if (!data.email) {
+      tempErrors.email = "Email is required";
+    } else if (!emailRegex.test(data.email)) {
+      tempErrors.email = "Email is not valid";
+    }
+
+    if (!data.password) {
+      tempErrors.password = "Password is required";
+    } else if (data.password.length < 6) {
+      tempErrors.password = "Password must be at least 6 characters long";
+    }
+
+    setErrors(tempErrors);
+
+    return Object.keys(tempErrors).length === 0; // True if no errors
+  };
 
   const handleVisible = () => {
     setIsPassVisible(!isPassVisible);
@@ -34,48 +56,50 @@ function NurseAuth() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginProgress());
-    axios
-      .post("http://localhost:4451/auth/login", data)
-      .then((res) => {
-        if (res.data.role === "nurse") {
-          const user = res.data.user;
-          dispatch(login(user));
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          navigate("/nurse-profile");
-          dispatch(loginSuccess());
-        } else if (
-          res.data.role === "doctor" ||
-          res.data.role === "admin" ||
-          res.data.role === "user"
-        ) {
+    if (validateForm()) {
+      dispatch(loginProgress());
+      axios
+        .post("http://localhost:4451/auth/login", data)
+        .then((res) => {
+          if (res.data.role === "nurse") {
+            const user = res.data.user;
+            dispatch(login(user));
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            navigate("/nurse-profile");
+            dispatch(loginSuccess());
+          } else if (
+            res.data.role === "doctor" ||
+            res.data.role === "admin" ||
+            res.data.role === "user"
+          ) {
+            dispatch(loginFailure());
+            Swal.fire({
+              title: "Invalid Role!",
+              icon: "error",
+              confirmButtonText: "Ok",
+              text: "Login Through Your Respective Page!",
+            });
+          } else {
+            dispatch(loginFailure());
+            Swal.fire({
+              title: "Invalid Access!",
+              icon: "error",
+              confirmButtonText: "Ok",
+              text: "You are not authorized to access this page!",
+            });
+          }
+        })
+        .catch((err) => {
           dispatch(loginFailure());
           Swal.fire({
-            title: "Invalid Role!",
+            title: "Invalid Credentials!",
             icon: "error",
             confirmButtonText: "Ok",
-            text: "Login Through Your Respective Page!",
+            text: "Please Check Your Credentials and Try Again!",
           });
-        } else {
-          dispatch(loginFailure());
-          Swal.fire({
-            title: "Invalid Access!",
-            icon: "error",
-            confirmButtonText: "Ok",
-            text: "You are not authorized to access this page!",
-          });
-        }
-      })
-      .catch((err) => {
-        dispatch(loginFailure());
-        Swal.fire({
-          title: "Invalid Credentials!",
-          icon: "error",
-          confirmButtonText: "Ok",
-          text: "Please Check Your Credentials and Try Again!",
         });
-      });
+    }
   };
 
   return (
@@ -123,6 +147,9 @@ function NurseAuth() {
                     value={data.email}
                   ></input>
                 </div>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -166,6 +193,9 @@ function NurseAuth() {
                     </svg>
                   )}
                 </div>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                )}
               </div>
               <div className="flex flex-col gap-3">
                 <button

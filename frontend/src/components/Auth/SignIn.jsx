@@ -26,56 +26,81 @@ function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.user.loading);
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    let tempErrors = {};
+    // Basic validation for email
+    if (!data.email) {
+      tempErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+      tempErrors.email = "Email is invalid";
+    }
+
+    // Basic validation for password
+    if (!data.password) {
+      tempErrors.password = "Password is required";
+    } else if (data.password.length < 6) {
+      tempErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(tempErrors);
+    console.log(Object.keys(tempErrors).length === 0);
+
+    return Object.keys(tempErrors).length === 0; // Form is valid if errors object is empty
+  };
 
   const [isPassVisible, setIsPassVisible] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginProgress());
-    axios
-      .post("http://localhost:4451/auth/login", data)
-      .then((res) => {
-        if (res.data.role === "patient") {
-          const user = res.data.user;
-          dispatch(login(user));
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate("/user-profile");
-          dispatch(loginSuccess());
-        } else if (res.data.role === "admin") {
-          const user = res.data.user;
-          dispatch(login(user));
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(user));
-          navigate("/admin-dashboard");
-          dispatch(loginSuccess());
-        } else if (res.data.role === "doctor" || res.data.role === "nurse") {
+    if (validateForm()) {
+      dispatch(loginProgress());
+      axios
+        .post("http://localhost:4451/auth/login", data)
+        .then((res) => {
+          if (res.data.role === "patient") {
+            const user = res.data.user;
+            dispatch(login(user));
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(user));
+            navigate("/user-profile");
+            dispatch(loginSuccess());
+          } else if (res.data.role === "admin") {
+            const user = res.data.user;
+            dispatch(login(user));
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify(user));
+            navigate("/admin-dashboard");
+            dispatch(loginSuccess());
+          } else if (res.data.role === "doctor" || res.data.role === "nurse") {
+            dispatch(loginFailure());
+            Swal.fire({
+              title: "Invalid Role!",
+              icon: "error",
+              confirmButtonText: "Ok",
+              text: "Login Through Your Respective Page!",
+            });
+          } else {
+            dispatch(loginFailure());
+            Swal.fire({
+              title: "Invalid Access!",
+              icon: "error",
+              confirmButtonText: "Ok",
+              text: "You are not authorized to access this page!",
+            });
+          }
+        })
+        .catch((err) => {
           dispatch(loginFailure());
           Swal.fire({
-            title: "Invalid Role!",
+            title: "Invalid Credentials!",
             icon: "error",
             confirmButtonText: "Ok",
-            text: "Login Through Your Respective Page!",
+            text: "Please Check Your Credentials and Try Again!",
           });
-        } else {
-          dispatch(loginFailure());
-          Swal.fire({
-            title: "Invalid Access!",
-            icon: "error",
-            confirmButtonText: "Ok",
-            text: "You are not authorized to access this page!",
-          });
-        }
-      })
-      .catch((err) => {
-        dispatch(loginFailure());
-        Swal.fire({
-          title: "Invalid Credentials!",
-          icon: "error",
-          confirmButtonText: "Ok",
-          text: "Please Check Your Credentials and Try Again!",
         });
-      });
+    }
   };
 
   const handleDoctor = () => {
@@ -135,6 +160,9 @@ function SignIn() {
                     value={data.email}
                   ></input>
                 </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
               <div>
                 <div className="flex items-center justify-between">
@@ -178,6 +206,9 @@ function SignIn() {
                     </svg>
                   )}
                 </div>
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
               </div>
               <div className="flex flex-col gap-3">
                 <button
