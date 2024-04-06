@@ -23,7 +23,7 @@ const doctorSchema = new mongoose.Schema({
     type: Date,
   },
   description: {
-    required: true,
+    required: false,
     type: String,
   },
   gender: {

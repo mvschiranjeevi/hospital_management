@@ -164,7 +164,7 @@ function AdminNurse() {
                           {item.ward}
                         </td>
                         <td scope="col" className="px-6 py-3">
-                          {item.department.name}
+                          {item.department?.name}
                         </td>
                         <td scope="col" className="d-flex gap-3 ">
                           <div

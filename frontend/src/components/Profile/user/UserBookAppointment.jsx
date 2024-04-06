@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import UserSidebar from "./UserSidebar";
 
 function UserBookAppointment() {
+  const user = JSON.parse(localStorage.getItem("user"));
   const [userData, setuserData] = useState([]);
   const [userName, setName] = useState("");
   const [doctor, setDoctor] = useState("");
@@ -36,29 +37,33 @@ function UserBookAppointment() {
     const today = new Date();
     return today.toISOString().split("T")[0];
   };
+  const fetchInfo = async () => {
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.get("http://localhost:4451/auth/loggedIn", {
+        headers: {
+          "x-access-token": token,
+        },
+      }).then((res) => {
+        console.log(res, "hello")
+      });
+      const user = res.data.user;
+      setuserData(user);
+
+      setName(user.userName);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchDoctors = async () => {
+    const res = await axios.get("http://localhost:4451/doctor/get-doctors");
+    setDoctors(res.data);
+  };
 
   useEffect(() => {
-    const fetchInfo = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:4451/auth/loggedIn", {
-          headers: {
-            "x-access-token": token,
-          },
-        });
-        const user = res.data.user;
-        setuserData(user);
-        setName(user.userName);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const fetchDoctors = async () => {
-      const res = await axios.get("http://localhost:4451/doctor/get-doctors");
-      setDoctors(res.data);
-    };
-
     fetchDoctors();
     fetchInfo();
   }, []);
@@ -145,7 +150,7 @@ function UserBookAppointment() {
 
     try {
       await axios.post("http://localhost:4451/appointment/add-appointment", {
-        patient: userData._id,
+        patient: user._id,
         doctor: doctor,
         appointmentTimeId: selectedTimeId,
         reason: reason,
@@ -242,17 +247,17 @@ function UserBookAppointment() {
               <div className="p-5 bg-gray-100 rounded-lg my-1">
                 <h4 className="font-semibold text-lg mb-2">Doctor Details:</h4>
                 <p>
-                  <strong>Description:</strong> {doctorDetails.description}
+                  <strong>Description:</strong> {doctorDetails?.description}
                 </p>
                 <p>
                   <strong>Specialization:</strong>{" "}
                   {doctorDetails.specialization}
                 </p>
                 <p>
-                  <strong>Address:</strong> {doctorDetails.address.street}
+                  <strong>Address:</strong> {doctorDetails?.address?.street}
                   {", "}
-                  {doctorDetails.address.city} {", "}
-                  {doctorDetails.address.state}
+                  {doctorDetails.address?.city} {", "}
+                  {doctorDetails.address?.state}
                 </p>
               </div>
             )}
@@ -270,11 +275,10 @@ function UserBookAppointment() {
                         return (
                           <button
                             key={index}
-                            className={`p-4 rounded-lg text-center cursor-pointer ${
-                              selectedTimeId === availableTime._id
-                                ? "bg-blue-500 text-white"
-                                : "bg-blue-200 hover:bg-blue-300"
-                            }`}
+                            className={`p-4 rounded-lg text-center cursor-pointer ${selectedTimeId === availableTime._id
+                              ? "bg-blue-500 text-white"
+                              : "bg-blue-200 hover:bg-blue-300"
+                              }`}
                             onClick={(e) =>
                               handleTimeSelect(
                                 e,

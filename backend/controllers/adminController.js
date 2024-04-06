@@ -56,26 +56,41 @@ router.get("/get-contacts", async (req, res) => {
 router.post("/add-department", async (req, res) => {
   const { name, description, head, staff } = req.body;
   try {
-    const existingdept = await Department.findOne({ name });
+    const existingDept = await Department.findOne({ name });
 
-    if (existingdept) {
+    if (existingDept) {
       return res
         .status(400)
-        .json({ error: "Department with same name already exists" });
+        .json({ error: "Department with the same name already exists" });
     }
+
+
+    const latestDept = await Department.findOne().sort({ departmentId: -1 });
+    let departmentId;
+
+    if (latestDept) {
+      const lastDeptId = parseInt(latestDept.departmentId, 10);
+      departmentId = (lastDeptId + 1).toString();
+    } else {
+      departmentId = "1";
+    }
+
     const newDept = new Department({
       name,
       description,
       head,
       staff,
+      departmentId,
     });
 
     const savedDept = await newDept.save();
-    res.status(200).json(savedDept);
+    res.status(200).json({ savedDept, message: "Success" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 router.delete("/delete-department/:id", async (req, res) => {
   try {
@@ -88,6 +103,7 @@ router.delete("/delete-department/:id", async (req, res) => {
 
 router.get("/get-department", async (req, res) => {
   try {
+
     const depts = await Department.find({}).populate("head", "name");
     depts;
     res.json(depts);
