@@ -13,6 +13,7 @@ function UserBookAppointment() {
   const [reason, setReason] = useState("");
   const [appointmentDate, setAppointmentDate] = useState("");
   const [time, setTime] = useState("");
+  const [fee, setFee] = useState(0)
   const [doctors, setDoctors] = useState([]);
   const [errors, setErrors] = useState({
     doctor: "",
@@ -26,11 +27,12 @@ function UserBookAppointment() {
   const [searchClicked, setSearchClicked] = useState(false);
   const [searchFlag, setSearchFlag] = useState(false);
 
-  const handleTimeSelect = (e, timeId, time) => {
+  const handleTimeSelect = (e, timeId, time, fee) => {
     e.preventDefault();
     setSelectedTimeId(timeId);
     console.log(selectedTimeId);
     setTime(time);
+    setFee(fee)
   };
 
   const getDay = () => {
@@ -154,6 +156,7 @@ function UserBookAppointment() {
         doctor: doctor,
         appointmentTimeId: selectedTimeId,
         reason: reason,
+
       });
       Swal.fire({
         title: "Success",
@@ -279,12 +282,15 @@ function UserBookAppointment() {
                               ? "bg-blue-500 text-white"
                               : "bg-blue-200 hover:bg-blue-300"
                               }`}
-                            onClick={(e) =>
+                            onClick={(e) => {
+                              console.log(availableTime, "available time");
                               handleTimeSelect(
                                 e,
                                 availableTime._id,
-                                availableTime.time
+                                availableTime.time,
+                                availableTime.fee
                               )
+                            }
                             }
                           >
                             {formattedTime}

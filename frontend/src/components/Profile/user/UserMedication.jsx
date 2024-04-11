@@ -9,31 +9,32 @@ function UserMedication() {
 
   const [medicines, setMedicines] = useState([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4451/user/get-medications/${userData.email}`
-      );
 
-      const data = response.data;
-
-      const medicationsArray = data.map(({ medications }) => medications);
-
-      const detailsArray = medicationsArray.map((medications) =>
-        medications.map(({ name, dosage, frequency }) => ({
-          name,
-          dosage,
-          frequency,
-        }))
-      );
-
-      setMedicines(detailsArray);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4451/user/get-medications/${userData.email}`
+        );
+
+        const data = response.data;
+
+        const medicationsArray = data.map(({ medications }) => medications);
+
+        const detailsArray = medicationsArray.map((medications) =>
+          medications.map(({ name, dosage, frequency }) => ({
+            name,
+            dosage,
+            frequency,
+          }))
+        );
+
+        setMedicines(detailsArray);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
     fetchData();
   }, []);
 

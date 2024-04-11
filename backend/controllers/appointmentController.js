@@ -8,7 +8,9 @@ const Patient = require("../models/user");
 const checkAccess = require("../middlewares/checkAccess");
 
 router.get("/get-appointments/:id", async (req, res) => {
+
   const { id } = req.params;
+
   try {
     const appointments = await Appointment.find({ patient: id }).populate(
       "doctor"
@@ -98,6 +100,7 @@ router.post("/add-appointment", async (req, res) => {
       patient,
       appointmentTimeId,
       reason,
+
     });
 
     const savedAppointment = await newAppointment.save();
@@ -122,6 +125,7 @@ const getLocalDateString = () => {
 };
 
 router.get("/get-appointment-time/:id", async (req, res) => {
+  console.log('hit!')
   const { id } = req.params;
   try {
     // Get today's date in UTC in "YYYY-MM-DD" format for comparison
