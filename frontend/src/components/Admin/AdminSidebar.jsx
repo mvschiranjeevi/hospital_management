@@ -69,6 +69,14 @@ const AdminSidebar = ({ profilePic, userName }) => {
           <NavLink
             style={navLinkStyle}
             className={"w-full p-2 h-[40px] rounded"}
+            to="/admin-department"
+          >
+            Department
+          </NavLink>
+
+          <NavLink
+            style={navLinkStyle}
+            className={"w-full p-2 h-[40px] rounded"}
             to="/admin-query"
           >
             Query

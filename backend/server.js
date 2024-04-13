@@ -9,6 +9,7 @@ const doctorController = require("./controllers/doctorController");
 const nurseController = require("./controllers/nurseController");
 const appointmentController = require("./controllers/appointmentController");
 const adminController = require("./controllers/adminController");
+const insuranceController = require("./controllers/insuranceController")
 const limiter = require("./middlewares/rateLimiter");
 const verifyUser = require("./middlewares/verifyUser");
 const router = express.Router();
@@ -23,6 +24,7 @@ app.use("/user", limiter, userController);
 app.use("/doctor", limiter, doctorController);
 app.use("/nurse", limiter, nurseController);
 app.use("/appointment", limiter, appointmentController);
+app.use("/insurance", limiter, insuranceController);
 app.use("/admin", limiter, adminController);
 app.use(errorHandlerMiddleware);
 
