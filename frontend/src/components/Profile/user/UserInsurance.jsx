@@ -20,7 +20,7 @@ function UserMedication() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:4451/user/get-medications/${userData.email}`
+                    `http://18.117.148.157:4451/user/get-medications/${userData.email}`
                 );
 
                 const data = response.data;
@@ -47,7 +47,7 @@ function UserMedication() {
 
         try {
             console.log('test')
-            await axios.post(`http://localhost:4451/insurance/add-insurance/${userData._id}`, {
+            await axios.post(`http://18.117.148.157:4451/insurance/add-insurance/${userData._id}`, {
                 patientId: userData._id,
                 company: company,
                 type: type,
@@ -105,7 +105,7 @@ function UserMedication() {
     const getInsurance = async () => {
 
         try {
-            const response = await axios.get(`http://localhost:4451/insurance/get-insurance/${userData._id}`)
+            const response = await axios.get(`http://18.117.148.157:4451/insurance/get-insurance/${userData._id}`)
 
             const data = response.data;
             console.log(data, "insurances");

@@ -44,7 +44,7 @@ function UserBookAppointment() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.get("http://localhost:4451/auth/loggedIn", {
+      await axios.get("http://18.117.148.157:4451/auth/loggedIn", {
         headers: {
           "x-access-token": token,
         },
@@ -61,7 +61,7 @@ function UserBookAppointment() {
   };
 
   const fetchDoctors = async () => {
-    const res = await axios.get("http://localhost:4451/doctor/get-doctors");
+    const res = await axios.get("http://18.117.148.157:4451/doctor/get-doctors");
     setDoctors(res.data);
   };
 
