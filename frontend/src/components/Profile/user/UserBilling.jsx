@@ -103,6 +103,7 @@ function UserMedication() {
                                                     <td scope="col" className="px-6 py-3">
                                                         {appointment.timeDetails.fee}
                                                     </td>
+
                                                     {/* <td scope="col" className="px-6 py-3">
                                                         <div className="flex">
                                                             <select
