@@ -30,7 +30,7 @@ function DoctorReview() {
   useEffect(() => {
     const getNurses = async () => {
       await axios
-        .get("http://localhost:4451/nurse/get-allNurses")
+        .get("http://18.117.148.157:4451/nurse/get-allNurses")
         .then((response) => {
           setNurses(response.data);
         })
@@ -49,7 +49,7 @@ function DoctorReview() {
   const handleAddMessage = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:4451/doctor/add-message", {
+      .post("http://18.117.148.157:4451/doctor/add-message", {
         email,
         message,
         from,

@@ -28,7 +28,7 @@ function Home() {
   const handleNewsletter = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:4451/admin/new-letter", { email })
+      .post("http://18.117.148.157:4451/admin/new-letter", { email })
       .then(() => {
         Swal.fire({
           title: "Success",

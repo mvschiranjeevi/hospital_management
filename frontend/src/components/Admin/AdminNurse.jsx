@@ -18,7 +18,7 @@ function AdminNurse() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4451/admin/get-department"
+          "http://18.117.148.157:4451/admin/get-department"
         );
         setDepartments(response.data);
       } catch (error) {
@@ -36,7 +36,7 @@ function AdminNurse() {
   useEffect(() => {
     const getNurses = async () => {
       const data = await axios
-        .get("http://localhost:4451/nurse/get-nurses")
+        .get("http://18.117.148.157:4451/nurse/get-nurses")
         .then((response) => {
           setNurses(response.data);
         })
@@ -55,7 +55,7 @@ function AdminNurse() {
   const handleAddNurse = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:4451/nurse/add-nurse", {
+      .post("http://18.117.148.157:4451/nurse/add-nurse", {
         name: nurname,
         email: nuremail,
         department: nurdept,
@@ -91,7 +91,7 @@ function AdminNurse() {
       if (result.isConfirmed) {
         // User confirmed deletion
         axios
-          .delete(`http://localhost:4451/admin/delete-nurse/${id}`)
+          .delete(`http://18.117.148.157:4451/admin/delete-nurse/${id}`)
           .then((res) => {
             Swal.fire({
               title: "Success",
