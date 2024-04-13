@@ -2,22 +2,30 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const insuranceSchema = new Schema({
-  insuranceId: {
+  patientId: {
     type: mongoose.Schema.ObjectId,
-    required: true,
-  },
-  policyNo: {
-    type: Number,
     required: true,
   },
   company: {
     type: String,
     required: true,
   },
-  coverage: {
+  type: {
     type: String,
     required: true,
   },
+  validity: {
+    type: Date,
+    required: true,
+  },
+  outOfThePocket: {
+    type: Number,
+    required: true
+  },
+  coverage: {
+    type: Number,
+    required: true
+  }
 });
 
 const Insurance = mongoose.model("Insurance", insuranceSchema, "insurance");

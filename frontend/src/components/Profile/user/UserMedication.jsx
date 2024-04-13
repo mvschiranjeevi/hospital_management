@@ -9,6 +9,8 @@ function UserMedication() {
 
   const [medicines, setMedicines] = useState([]);
 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,6 +19,7 @@ function UserMedication() {
         );
 
         const data = response.data;
+
         const medicationsArray = data.map(({ medications }) => medications);
 
         const detailsArray = medicationsArray.map((medications) =>
@@ -32,7 +35,6 @@ function UserMedication() {
         console.error("Error fetching users:", error);
       }
     };
-
     fetchData();
   }, []);
 

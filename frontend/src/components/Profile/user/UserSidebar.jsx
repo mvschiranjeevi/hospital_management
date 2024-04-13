@@ -69,6 +69,22 @@ const UserSidebar = ({ profiePic, userName }) => {
           >
             Medication
           </NavLink>
+          <NavLink
+            style={navLinkStyle}
+            className={"w-full p-2"}
+            to="/user-billing"
+            activeClassName="bg-black text-white"
+          >
+            Billing
+          </NavLink>
+          <NavLink
+            style={navLinkStyle}
+            className={"w-full p-2"}
+            to="/user-insurance"
+            activeClassName="bg-black text-white"
+          >
+            Insurance
+          </NavLink>
         </div>
       </div>
       <div className="w-full text-center p-2">

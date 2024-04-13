@@ -14,6 +14,7 @@ const appointmentSchema = new Schema({
     type: mongoose.Schema.ObjectId,
     required: true,
   },
+
   reason: {
     type: String,
   },
