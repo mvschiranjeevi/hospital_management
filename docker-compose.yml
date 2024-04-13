@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "4451:4451"
+    environment:
+      - NODE_ENV=production
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
