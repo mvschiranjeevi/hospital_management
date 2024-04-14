@@ -10,43 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-
-      - name: Build and push Backend Docker Image
-        run: |
-          cd backend
-          docker buildx build --platform linux/amd64,linux/arm64 -t mvschiranjeevi/backend --push .
-        env:
-          DOCKER_BUILDKIT: 1
-          DOCKER_CLI_EXPERIMENTAL: enabled
-
-      - name: Build and push Frontend Docker Image
-        run: |
-          cd frontend
-          docker buildx build --platform linux/amd64,linux/arm64 -t mvschiranjeevi/frontend --push .
-        env:
-          DOCKER_BUILDKIT: 1
-          DOCKER_CLI_EXPERIMENTAL: enabled
-          
-      - name: Set correct permissions for SSH private key
-        run: chmod 600 ${{ secrets.EC2_PRIVATE_KEY }}
-
-
-      - name: SSH into EC2 Instance
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: |
-            docker pull mvschiranjeevi/backend
-            docker pull mvschiranjeevi/frontend
-            docker run -d --name backend-container -p 4451:4451 mvschiranjeevi/backend
-            docker run -d --name frontend-container -p 5173:5173 mvschiranjeevi/frontend
+      - name: Debug SSH private key
+        run: echo "$EC2_PRIVATE_KEY"
+      
