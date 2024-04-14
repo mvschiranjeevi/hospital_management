@@ -34,6 +34,10 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
+          
+      - name: Set correct permissions for SSH private key
+        run: chmod 600 ${{ secrets.EC2_PRIVATE_KEY }}
+
 
       - name: SSH into EC2 Instance
         uses: appleboy/ssh-action@master
