@@ -67,7 +67,7 @@ const UserSidebar = ({ profiePic, userName }) => {
             to="/user-medication"
             activeClassName="bg-black text-white"
           >
-            Medication
+            Medications
           </NavLink>
           <NavLink
             style={navLinkStyle}

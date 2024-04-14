@@ -48,5 +48,5 @@ jobs:
             docker system prune -af || true
             docker pull mvschiranjeevi/backend
             docker pull mvschiranjeevi/frontend
-            docker run -d --name backend-container -p 4451:4451 mvschiranjeevi/backend
-            docker run -d --name frontend-container -p 5173:5173 mvschiranjeevi/frontend
+            docker run --name backend-container -dp 4451:4451 --platform linux/amd64 mvschiranjeevi/backend
+            docker run --name frontend-container -dp 5173:5173 --platform linux/amd64 mvschiranjeevi/frontend
