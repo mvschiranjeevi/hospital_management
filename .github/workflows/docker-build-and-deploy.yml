@@ -21,6 +21,7 @@ jobs:
 
       - name: Build and push Backend Docker Image
         run: |
+          cd backend
           docker buildx build --platform linux/amd64,linux/arm64 -t mvschiranjeevi/backend --push .
         env:
           DOCKER_BUILDKIT: 1
@@ -28,6 +29,7 @@ jobs:
 
       - name: Build and push Frontend Docker Image
         run: |
+          cd frontend
           docker buildx build --platform linux/amd64,linux/arm64 -t mvschiranjeevi/frontend --push .
         env:
           DOCKER_BUILDKIT: 1
