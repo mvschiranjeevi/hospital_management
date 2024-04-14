@@ -35,7 +35,7 @@ jobs:
         env:
           DOCKER_BUILDKIT: 1
           DOCKER_CLI_EXPERIMENTAL: enabled
-          
+
       - name: SSH into EC2 Instance
         uses: appleboy/ssh-action@master
         with:
@@ -43,6 +43,9 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
+            docker rm -f backend-container frontend-container || true
+            docker rmi -f mvschiranjeevi/backend mvschiranjeevi/frontend || true
+            docker system prune -af || true
             docker pull mvschiranjeevi/backend
             docker pull mvschiranjeevi/frontend
             docker run -d --name backend-container -p 4451:4451 mvschiranjeevi/backend
