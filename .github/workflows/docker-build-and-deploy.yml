@@ -12,4 +12,6 @@ jobs:
     steps:
       - name: Debug SSH private key
         run: echo "$EC2_PRIVATE_KEY"
+      - name: Set correct permissions for SSH private key
+        run: chmod 600 ${{ secrets.EC2_PRIVATE_KEY }}
       
