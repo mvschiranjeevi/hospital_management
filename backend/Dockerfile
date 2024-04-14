@@ -2,6 +2,8 @@ FROM node:18-bullseye
 
 WORKDIR /backend
 
+RUN npm cache clean --force
+
 COPY package*.json ./
 
 RUN npm install
