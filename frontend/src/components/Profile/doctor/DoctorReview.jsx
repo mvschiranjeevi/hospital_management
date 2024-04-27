@@ -20,8 +20,7 @@ function DoctorReview() {
     const fetchInfo = async (e) => {
       const user = JSON.parse(localStorage.getItem("user"));
       setuserData(user);
-
-      setFrom(user.name);
+      setFrom(user._id);
     };
 
     fetchInfo();

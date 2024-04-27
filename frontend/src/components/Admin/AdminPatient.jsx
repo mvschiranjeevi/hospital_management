@@ -40,13 +40,14 @@ function AdminPatient() {
       if (result.isConfirmed) {
         // User confirmed deletion
         axios
-          .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
+          .delete(`http://localhost:4451/user/delete-patient/${id}`)
           .then((res) => {
             Swal.fire({
               title: "Success",
               icon: "success",
               text: "Patient Deleted Successfully!",
             });
+            setUsers(users.filter((user) => user._id !== id));
           })
           .catch((err) => {
             Swal.fire({

@@ -5,6 +5,8 @@ const Doctor = require("../models/doctor");
 const checkAdmin = require("../middlewares/checkAdmin");
 const Appointment = require("../models/appointment");
 const Communication = require("../models/communication");
+const ObjectId = require("mongoose").Types.ObjectId;
+const Users = require("../models/user");
 
 router.get("/doctor-details/:doctorId", async (req, res) => {
   const { doctorId } = req.params;
@@ -45,9 +47,11 @@ router.put("/profile-update", async (req, res) => {
 });
 
 router.delete("/delete-doctor/:id", async (req, res) => {
-  const userId = req.params.id;
+  const userId = new ObjectId(req.params.id);
+  console.log(userId);
   try {
     const user = await Doctor.findByIdAndDelete(userId);
+    console.log(user);
     res.json({ msg: "Doctor deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -110,6 +114,7 @@ router.get("/get-appointments/:id", async (req, res) => {
 
 router.post("/add-message", async (req, res) => {
   const { email, message, from } = req.body;
+  console.log(email, message, from);
 
   const newEntry = await new Communication({ email, message, from });
 
@@ -121,13 +126,25 @@ router.post("/add-message", async (req, res) => {
   }
 });
 router.get("/get-message/:email", async (req, res) => {
-  const email = req.params.email; // Correct way to access email from request parameters
+  const email = req.params.email;
 
   try {
-    const message = await Communication.find({ email });
-    res.json(message);
+    const messages = await Communication.find({ email });
+    const results = await Promise.all(
+      messages.map(async (message) => {
+        const doctor = await Doctor.findById(message.from);
+        return {
+          ...message.toObject(), // Convert mongoose document to plain object
+          doctorName: doctor ? doctor.name : "Doctor not found",
+        };
+      })
+    );
+
+    res.json(results);
   } catch (error) {
-    res.status(500).json({ error: "Could not get the message" }); // Set proper status code and error response
+    res
+      .status(500)
+      .json({ error: "Could not get the message or doctor information" });
   }
 });
 

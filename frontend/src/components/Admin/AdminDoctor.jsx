@@ -104,6 +104,9 @@ function AdminDoctor() {
               icon: "success",
               text: "Patient Deleted Successfully!",
             });
+            setDoctors((prevDoctors) =>
+              prevDoctors.filter((doctor) => doctor._id !== id)
+            );
           })
           .catch((err) => {
             Swal.fire({

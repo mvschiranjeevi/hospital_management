@@ -26,6 +26,33 @@ function DoctorAppointmen() {
 
     fetchData();
   }, []);
+  const formatTime = (timeString) => {
+    const [hour, minute] = timeString.split(":");
+    const hours = parseInt(hour, 10);
+    const suffix = hours >= 12 ? "PM" : "AM";
+    const formattedHour = ((hours + 11) % 12) + 1;
+    return `${formattedHour}:${minute} ${suffix}`;
+  };
+
+  const formatDate = (dateString) => {
+    // Split the dateString into components. Expected format: "YYYY-MM-DD"
+    const [year, month, day] = dateString
+      .split("-")
+      .map((num) => parseInt(num, 10));
+
+    // Create a new Date object from the components. Note: month is 0-indexed.
+    const date = new Date(year, month - 1, day);
+
+    const options = {
+      weekday: "long", // e.g., Monday
+      year: "numeric", // e.g., 2023
+      month: "long", // e.g., March
+      day: "numeric", // e.g., 30
+    };
+
+    // Return the formatted string in the "en-US" locale
+    return date.toLocaleDateString("en-US", options);
+  };
 
   return (
     <section className="bg-slate-300 flex justify-center items-center">
@@ -72,10 +99,10 @@ function DoctorAppointmen() {
                           {item.patientName}
                         </td>
                         <td scope="col" className="px-6 py-3">
-                          {item.appointmentDate}
+                          {formatDate(item.appointmentDate)}
                         </td>
                         <td scope="col" className="px-6 py-3">
-                          {item.time}
+                          {formatTime(item.time)}
                         </td>
                         <td scope="col" className="px-6 py-3">
                           {item.status}

@@ -8,7 +8,6 @@ const Patient = require("../models/user");
 const checkAccess = require("../middlewares/checkAccess");
 
 router.get("/get-appointments/:id", async (req, res) => {
-
   const { id } = req.params;
 
   try {
@@ -19,7 +18,6 @@ router.get("/get-appointments/:id", async (req, res) => {
     if (appointments.length === 0) {
       return res.json({ message: "No Appointments Booked!" });
     }
-
     const appointmentsWithDoctorNames = await Promise.all(
       appointments.map(async (appointment) => {
         const doctor = await Doctor.findById(appointment.doctor);
@@ -76,10 +74,14 @@ router.get("/get-appointment/:id", async (req, res) => {
     const appointmentsWithPatientName = await Promise.all(
       appointments.map(async (appointment) => {
         const patient = await Patient.findById(appointment.patient).exec(); // Assuming `patient` is the correct field name on the appointment object
-        // Clone the appointment object and add patientName to it
+        const aptTime = await Time.findById(
+          appointment.appointmentTimeId
+        ).exec();
         return {
           ...appointment.toObject(),
           patientName: patient ? patient.userName : "Unknown",
+          appointmentDate: aptTime ? aptTime.date : "Unknown",
+          time: aptTime ? aptTime.time : "Unknown",
         }; // Assuming `name` is the field on the patient object
       })
     );
@@ -100,7 +102,6 @@ router.post("/add-appointment", async (req, res) => {
       patient,
       appointmentTimeId,
       reason,
-
     });
 
     const savedAppointment = await newAppointment.save();
@@ -125,7 +126,7 @@ const getLocalDateString = () => {
 };
 
 router.get("/get-appointment-time/:id", async (req, res) => {
-  console.log('hit!')
+  console.log("hit!");
   const { id } = req.params;
   try {
     // Get today's date in UTC in "YYYY-MM-DD" format for comparison

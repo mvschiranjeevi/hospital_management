@@ -18,6 +18,7 @@ function NurseBed() {
           .get(`http://localhost:4451/doctor/get-message/${currentUser.email}`)
           .then((res) => {
             setMessage(res.data);
+            console.log(message);
           });
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -57,7 +58,7 @@ function NurseBed() {
                           {index + 1}
                         </td>
                         <td scope="col" className="px-6 py-3">
-                          {item.from}
+                          {item.doctorName}
                         </td>
                         <td scope="col" className="px-6 py-3">
                           {item.message}

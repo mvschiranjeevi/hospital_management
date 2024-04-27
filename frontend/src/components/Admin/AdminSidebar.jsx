@@ -81,13 +81,6 @@ const AdminSidebar = ({ profilePic, userName }) => {
           >
             Query
           </NavLink>
-          <NavLink
-            style={navLinkStyle}
-            className={"w-full p-2 h-[40px] rounded"}
-            to="/admin-newsletter"
-          >
-            Newsletter
-          </NavLink>
         </div>
         <div className="w-full text-center mt-10">
           <button
