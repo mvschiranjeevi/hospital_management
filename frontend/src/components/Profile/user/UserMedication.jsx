@@ -15,7 +15,7 @@ function UserMedication() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4451/user/get-medications/${userData.email}`
+          `http://18.117.148.157:4451/user/get-medications/${userData.email}`
         );
 
         const data = response.data;

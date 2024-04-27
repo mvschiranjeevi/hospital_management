@@ -59,7 +59,7 @@ function NurseAuth() {
     if (validateForm()) {
       dispatch(loginProgress());
       axios
-        .post("http://localhost:4451/auth/login", data)
+        .post("http://18.117.148.157:4451/auth/login", data)
         .then((res) => {
           if (res.data.role === "nurse") {
             const user = res.data.user;

@@ -44,7 +44,7 @@ function UserBookAppointment() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.get("http://localhost:4451/auth/loggedIn", {
+      await axios.get("http://18.117.148.157:4451/auth/loggedIn", {
         headers: {
           "x-access-token": token,
         },
@@ -61,11 +61,32 @@ function UserBookAppointment() {
   };
 
   const fetchDoctors = async () => {
-    const res = await axios.get("http://localhost:4451/doctor/get-doctors");
+    const res = await axios.get("http://18.117.148.157:4451/doctor/get-doctors");
     setDoctors(res.data);
   };
 
   useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://18.117.148.157:4451/auth/loggedIn", {
+          headers: {
+            "x-access-token": token,
+          },
+        });
+        const user = res.data.user;
+        setuserData(user);
+        setName(user.userName);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const fetchDoctors = async () => {
+      const res = await axios.get("http://18.117.148.157:4451/doctor/get-doctors");
+      setDoctors(res.data);
+    };
+
     fetchDoctors();
     fetchInfo();
   }, []);
@@ -82,12 +103,12 @@ function UserBookAppointment() {
   const fetchDoctorDetailsAndTimes = async (doctorId) => {
     try {
       const doctorDetailsRes = await axios.get(
-        `http://localhost:4451/doctor/doctor-details/${doctorId}`
+        `http://18.117.148.157:4451/doctor/doctor-details/${doctorId}`
       );
       setDoctorDetails(doctorDetailsRes.data);
 
       const availableTimesRes = await axios.get(
-        `http://localhost:4451/appointment/available-times/${doctorId}?date=${appointmentDate}`
+        `http://18.117.148.157:4451/appointment/available-times/${doctorId}?date=${appointmentDate}`
       );
       setAvailableTimes(availableTimesRes.data);
       console.log(availableTimes.length);
@@ -151,8 +172,8 @@ function UserBookAppointment() {
     }
 
     try {
-      await axios.post("http://localhost:4451/appointment/add-appointment", {
-        patient: user._id,
+      await axios.post("http://18.117.148.157:4451/appointment/add-appointment", {
+        patient: userData._id,
         doctor: doctor,
         appointmentTimeId: selectedTimeId,
         reason: reason,

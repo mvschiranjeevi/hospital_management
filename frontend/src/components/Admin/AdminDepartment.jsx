@@ -21,7 +21,7 @@ function AdminDepartment() {
     useEffect(() => {
         const getNurses = async () => {
             await axios
-                .get("http://localhost:4451/nurse/get-allNurses")
+                .get("http://18.117.148.157:4451/nurse/get-allNurses")
                 .then((response) => {
                     setNurses(response.data);
                 })
@@ -39,7 +39,7 @@ function AdminDepartment() {
     const fetchData = async () => {
         try {
             const response = await axios.get(
-                "http://localhost:4451/admin/get-department"
+                "http://18.117.148.157:4451/admin/get-department"
             );
             console.log(response.data)
             setDepartments(response.data);
@@ -65,7 +65,7 @@ function AdminDepartment() {
         e.preventDefault();
 
         await axios
-            .post("http://localhost:4451/admin/add-department", {
+            .post("http://18.117.148.157:4451/admin/add-department", {
                 name: deptName,
                 description: deptDesc,
                 head: deptHead,
@@ -96,7 +96,7 @@ function AdminDepartment() {
 
     const editPatient = async (id) => {
         await axios
-            .put(`http://localhost:4451/doctor/update-doctor/${id}`, {})
+            .put(`http://18.117.148.157:4451/doctor/update-doctor/${id}`, {})
             .then((res) => {
                 Swal.fire({
                     title: "Success",
@@ -126,7 +126,7 @@ function AdminDepartment() {
             if (result.isConfirmed) {
                 // User confirmed deletion
                 axios
-                    .delete(`http://localhost:4451/admin/delete-department/${id}`)
+                    .delete(`http://18.117.148.157:4451/admin/delete-department/${id}`)
                     .then((res) => {
                         Swal.fire({
                             title: "Success",

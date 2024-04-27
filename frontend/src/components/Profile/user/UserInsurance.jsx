@@ -3,13 +3,14 @@ import { NavLink } from "react-router-dom";
 import profiePic from "../../../assets/human6.jpg";
 import UserSidebar from "./UserSidebar";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function UserMedication() {
     const userData = JSON.parse(localStorage.getItem("user"));
 
     const [insurances, setInsurances] = useState();
     const [company, setCompany] = useState('')
-    const [type, setType] = useState('');
+    const [type, setType] = useState('dental');
     const [validity, setValidity] = useState()
     const [outOfThePocket, setOutOfThePocket] = useState(0)
     const [coverage, setCoverage] = useState()
@@ -19,7 +20,7 @@ function UserMedication() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:4451/user/get-medications/${userData.email}`
+                    `http://18.117.148.157:4451/user/get-medications/${userData.email}`
                 );
 
                 const data = response.data;
@@ -46,7 +47,7 @@ function UserMedication() {
 
         try {
             console.log('test')
-            await axios.post(`http://localhost:4451/insurance/add-insurance/${userData._id}`, {
+            await axios.post(`http://18.117.148.157:4451/insurance/add-insurance/${userData._id}`, {
                 patientId: userData._id,
                 company: company,
                 type: type,
@@ -68,7 +69,7 @@ function UserMedication() {
                 confirmButtonText: "Ok",
                 text: "Insurance Added Successfully!",
             });
-            // Clear input fields after successful submission
+
 
         } catch (err) {
             Swal.fire({
@@ -79,16 +80,38 @@ function UserMedication() {
             });
         }
     }
+
+    function getMaxCoverageByType(policies) {
+        const maxCoverage = {};
+        const typesOfInterest = ["health", "vision", "dental"];
+
+        policies.forEach(policy => {
+            const { type, coverage } = policy;
+            if (typesOfInterest.includes(type)) {
+                // Check if this type has not been added yet or if the current policy has higher coverage
+                if (!maxCoverage[type] || coverage > maxCoverage[type].coverage) {
+                    maxCoverage[type] = policy;
+                }
+            }
+        });
+
+        // Convert the maxCoverage object's values to an array
+        return Object.values(maxCoverage);
+    }
+
+
+
+
     const getInsurance = async () => {
 
         try {
-            console.log('test')
-
-            const response = await axios.get(`http://localhost:4451/insurance/get-insurance/${userData._id}`)
+            const response = await axios.get(`http://18.117.148.157:4451/insurance/get-insurance/${userData._id}`)
 
             const data = response.data;
-            // Clear input fields after successful submission
-            setInsurances(data)
+            console.log(data, "insurances");
+            let filteredInsurances = getMaxCoverageByType(data)
+
+            setInsurances(filteredInsurances)
 
         } catch (err) {
             Swal.fire({

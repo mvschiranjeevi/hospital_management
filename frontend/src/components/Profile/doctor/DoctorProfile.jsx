@@ -64,7 +64,7 @@ function DoctorProfile() {
     if (validateForm()) {
       try {
         axios
-          .put("http://localhost:4451/doctor/profile-update", {
+          .put("http://18.117.148.157:4451/doctor/profile-update", {
             userId: userData._id,
             updatedProfile: {
               description: description,
