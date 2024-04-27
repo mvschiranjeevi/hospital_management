@@ -21,7 +21,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios
-      .post("http://18.117.148.157:4451/auth/register", data)
+      .post("http://localhost:4451/auth/register", data)
       .then((res) => {
         if (res.data.message === "Success") {
           navigate("/sign-in");

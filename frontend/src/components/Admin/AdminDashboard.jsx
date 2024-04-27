@@ -15,7 +15,7 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchInfo = async (e) => {
       await axios
-        .get("http://18.117.148.157:4451/admin/get-count", {})
+        .get("http://localhost:4451/admin/get-count", {})
         .then((res) => {
           setdocount(res.data.doccou);
           setnursecount(res.data.nursecou);

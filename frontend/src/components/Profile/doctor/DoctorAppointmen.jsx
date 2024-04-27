@@ -16,7 +16,7 @@ function DoctorAppointmen() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://18.117.148.157:4451/appointment/get-appointment/${currentUser._id}`
+          `http://localhost:4451/appointment/get-appointment/${currentUser._id}`
         );
         setAppointments(response.data);
       } catch (error) {

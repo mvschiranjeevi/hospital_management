@@ -26,7 +26,7 @@ function NurseMedication() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://18.117.148.157:4451/user/get-users"
+          "http://localhost:4451/user/get-users"
         );
         setPatients(response.data);
       } catch (error) {
@@ -40,7 +40,7 @@ function NurseMedication() {
   const handleAddMedication = async (e) => {
     e.preventDefault();
     await axios
-      .post(`http://18.117.148.157:4451/user/add-medications/${changePatient}`, {
+      .post(`http://localhost:4451/user/add-medications/${changePatient}`, {
         name,
         frequency,
         dosage,

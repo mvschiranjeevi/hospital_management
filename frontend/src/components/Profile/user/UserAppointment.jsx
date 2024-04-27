@@ -32,7 +32,7 @@ function UserAppointment() {
     const fetchAppointments = async (id) => {
       try {
         const res = await axios.get(
-          `http://18.117.148.157:4451/appointment/get-appointments/${id}`
+          `http://localhost:4451/appointment/get-appointments/${id}`
         );
         setAppointments(res.data);
         console.log(res.data);
@@ -69,7 +69,7 @@ function UserAppointment() {
       if (result.isConfirmed) {
         // User confirmed deletion
         axios
-          .delete(`http://18.117.148.157:4451/appointment/delete-appointment/${id}`)
+          .delete(`http://localhost:4451/appointment/delete-appointment/${id}`)
           .then((res) => {
             Swal.fire({
               title: "Success",

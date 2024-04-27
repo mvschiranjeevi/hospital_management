@@ -11,7 +11,7 @@ function AdminNewsletter() {
   const fetchSentMessages = async () => {
     try {
       await axios
-        .get("http://18.117.148.157:4451/admin/get-sent-newsletter")
+        .get("http://localhost:4451/admin/get-sent-newsletter")
         .then((res) => {
           setSubscribers(res.data);
         });

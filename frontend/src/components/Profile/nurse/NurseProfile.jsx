@@ -38,7 +38,7 @@ function NurseProfile() {
     e.preventDefault();
     try {
       axios
-        .put("http://18.117.148.157:4451/nurse/profile-update", {
+        .put("http://localhost:4451/nurse/profile-update", {
           userId: userData._id,
           updatedProfile: {
             email: email,

@@ -109,7 +109,7 @@ const AppointmentConfig = ({ doctorId }) => {
     // For saved appointments, call the backend to delete
     try {
       const response = await axios.delete(
-        `http://18.117.148.157:4451/appointment/delete-appointment/${appointmentId}`
+        `http://localhost:4451/appointment/delete-appointment/${appointmentId}`
       );
       if (response.status === 200 || response.status === 204) {
         // Assuming 200 OK or 204 No Content for successful deletion
@@ -136,7 +136,7 @@ const AppointmentConfig = ({ doctorId }) => {
   const fetchAppointments = async () => {
     try {
       const response = await axios.get(
-        `http://18.117.148.157:4451/appointment/get-appointment-time/${doctorId}`
+        `http://localhost:4451/appointment/get-appointment-time/${doctorId}`
       );
       if (response.status === 200 && response.data.appointments) {
         setAppointments(response.data.appointments);
@@ -235,7 +235,7 @@ const AppointmentConfig = ({ doctorId }) => {
 
     try {
       const response = await axios.post(
-        "http://18.117.148.157:4451/appointment/add-appointment-time",
+        "http://localhost:4451/appointment/add-appointment-time",
         {
           appointments: formattedAppointments,
         }

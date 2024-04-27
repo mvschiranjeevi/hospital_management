@@ -13,7 +13,7 @@ function UserBookAppointment() {
   const [reason, setReason] = useState("");
   const [appointmentDate, setAppointmentDate] = useState("");
   const [time, setTime] = useState("");
-  const [fee, setFee] = useState(0)
+  const [fee, setFee] = useState(0);
   const [doctors, setDoctors] = useState([]);
   const [errors, setErrors] = useState({
     doctor: "",
@@ -32,7 +32,7 @@ function UserBookAppointment() {
     setSelectedTimeId(timeId);
     console.log(selectedTimeId);
     setTime(time);
-    setFee(fee)
+    setFee(fee);
   };
 
   const getDay = () => {
@@ -40,17 +40,18 @@ function UserBookAppointment() {
     return today.toISOString().split("T")[0];
   };
   const fetchInfo = async () => {
-
     try {
       const token = localStorage.getItem("token");
 
-      await axios.get("http://18.117.148.157:4451/auth/loggedIn", {
-        headers: {
-          "x-access-token": token,
-        },
-      }).then((res) => {
-        console.log(res, "hello")
-      });
+      await axios
+        .get("http://localhost:4451/auth/loggedIn", {
+          headers: {
+            "x-access-token": token,
+          },
+        })
+        .then((res) => {
+          console.log(res, "hello");
+        });
       const user = res.data.user;
       setuserData(user);
 
@@ -61,7 +62,7 @@ function UserBookAppointment() {
   };
 
   const fetchDoctors = async () => {
-    const res = await axios.get("http://18.117.148.157:4451/doctor/get-doctors");
+    const res = await axios.get("http://localhost:4451/doctor/get-doctors");
     setDoctors(res.data);
   };
 
@@ -69,7 +70,7 @@ function UserBookAppointment() {
     const fetchInfo = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://18.117.148.157:4451/auth/loggedIn", {
+        const res = await axios.get("http://localhost:4451/auth/loggedIn", {
           headers: {
             "x-access-token": token,
           },
@@ -83,7 +84,7 @@ function UserBookAppointment() {
     };
 
     const fetchDoctors = async () => {
-      const res = await axios.get("http://18.117.148.157:4451/doctor/get-doctors");
+      const res = await axios.get("http://localhost:4451/doctor/get-doctors");
       setDoctors(res.data);
     };
 
@@ -103,12 +104,12 @@ function UserBookAppointment() {
   const fetchDoctorDetailsAndTimes = async (doctorId) => {
     try {
       const doctorDetailsRes = await axios.get(
-        `http://18.117.148.157:4451/doctor/doctor-details/${doctorId}`
+        `http://localhost:4451/doctor/doctor-details/${doctorId}`
       );
       setDoctorDetails(doctorDetailsRes.data);
 
       const availableTimesRes = await axios.get(
-        `http://18.117.148.157:4451/appointment/available-times/${doctorId}?date=${appointmentDate}`
+        `http://localhost:4451/appointment/available-times/${doctorId}?date=${appointmentDate}`
       );
       setAvailableTimes(availableTimesRes.data);
       console.log(availableTimes.length);
@@ -172,12 +173,11 @@ function UserBookAppointment() {
     }
 
     try {
-      await axios.post("http://18.117.148.157:4451/appointment/add-appointment", {
+      await axios.post("http://localhost:4451/appointment/add-appointment", {
         patient: userData._id,
         doctor: doctor,
         appointmentTimeId: selectedTimeId,
         reason: reason,
-
       });
       Swal.fire({
         title: "Success",
@@ -299,10 +299,11 @@ function UserBookAppointment() {
                         return (
                           <button
                             key={index}
-                            className={`p-4 rounded-lg text-center cursor-pointer ${selectedTimeId === availableTime._id
-                              ? "bg-blue-500 text-white"
-                              : "bg-blue-200 hover:bg-blue-300"
-                              }`}
+                            className={`p-4 rounded-lg text-center cursor-pointer ${
+                              selectedTimeId === availableTime._id
+                                ? "bg-blue-500 text-white"
+                                : "bg-blue-200 hover:bg-blue-300"
+                            }`}
                             onClick={(e) => {
                               console.log(availableTime, "available time");
                               handleTimeSelect(
@@ -310,9 +311,8 @@ function UserBookAppointment() {
                                 availableTime._id,
                                 availableTime.time,
                                 availableTime.fee
-                              )
-                            }
-                            }
+                              );
+                            }}
                           >
                             {formattedTime}
                           </button>

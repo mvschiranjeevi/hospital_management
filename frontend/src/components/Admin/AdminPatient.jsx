@@ -12,7 +12,7 @@ function AdminPatient() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://18.117.148.157:4451/admin/get-users"
+          "http://localhost:4451/admin/get-users"
         );
         setUsers(response.data);
       } catch (error) {
@@ -40,7 +40,7 @@ function AdminPatient() {
       if (result.isConfirmed) {
         // User confirmed deletion
         axios
-          .delete(`http://18.117.148.157:4451/doctor/delete-doctor/${id}`)
+          .delete(`http://localhost:4451/doctor/delete-doctor/${id}`)
           .then((res) => {
             Swal.fire({
               title: "Success",

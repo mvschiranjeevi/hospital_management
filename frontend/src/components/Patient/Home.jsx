@@ -28,7 +28,7 @@ function Home() {
   const handleNewsletter = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://18.117.148.157:4451/admin/new-letter", { email })
+      .post("http://localhost:4451/admin/new-letter", { email })
       .then(() => {
         Swal.fire({
           title: "Success",
@@ -212,7 +212,7 @@ function Home() {
         transition={{ duration: 1.5 }}
         whileInView={{ opacity: 1 }}
       > */}
-        {/* <div className="h-full max-w-7xl flex flex-col m-auto justify-center items-center overflow-auto">
+      {/* <div className="h-full max-w-7xl flex flex-col m-auto justify-center items-center overflow-auto">
           <p className="font-semibold text-3xl pt-16">Meet Our Specialist</p>
           <div className="flex flex-col gap-2">
 
@@ -490,13 +490,11 @@ function Home() {
                 </p>
               </div>
             </div>
-        
           </motion.div>
           <div className=" hidden lg:flex h-full  max-w-7xl m-auto flex-col items-center justify-end ">
-          <Footer />
+            <Footer />
+          </div>
         </div>
-        </div>
-
       </section>
       {/* <section>
         { <div className="absolute lg:m-56 md:m-36 sm:m-24 m-20 overflow-hidden">

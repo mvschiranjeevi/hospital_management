@@ -15,7 +15,7 @@ function NurseBed() {
     const fetchData = async () => {
       try {
         await axios
-          .get(`http://18.117.148.157:4451/doctor/get-message/${currentUser.email}`)
+          .get(`http://localhost:4451/doctor/get-message/${currentUser.email}`)
           .then((res) => {
             setMessage(res.data);
             console.log(message);
