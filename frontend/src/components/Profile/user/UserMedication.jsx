@@ -42,7 +42,7 @@ function UserMedication() {
         <UserSidebar profiePic={profiePic} userName={userData.userName} />
         <div className=" w-[70%] ms-24 p-4 flex flex-col justify-start gap-5 ">
           <p className="font-semibold text-3xl">Medications</p>
-          <div className="w-full">
+          <div className="w-full overflow-y-auto">
             {!medicines ? (
               <p>Medications are not prescribed</p>
             ) : (

@@ -267,97 +267,98 @@ function UserBookAppointment() {
                 </button>
               </div>
             </div>
-            {doctorDetails && (
-              <div className="p-5 bg-gray-100 rounded-lg my-1">
-                <h4 className="font-semibold text-lg mb-2">Doctor Details:</h4>
-                <p>
-                  <strong>Description:</strong> {doctorDetails?.description}
-                </p>
-                <p>
-                  <strong>Specialization:</strong>{" "}
-                  {doctorDetails.specialization}
-                </p>
-                <p>
-                  <strong>Address:</strong> {doctorDetails?.address?.street}
-                  {", "}
-                  {doctorDetails.address?.city} {", "}
-                  {doctorDetails.address?.state}
-                </p>
-              </div>
-            )}
-            {availableTimes.length > 0 && (
-              <>
-                <div className="grid grid-cols-3 gap-4 mt-0">
-                  <div className="mt-4">
-                    <h3 className="text-lg font-semibold">Available Times:</h3>
-                    <div className="grid grid-cols-3 gap-4 mt-2">
-                      {availableTimes.map((availableTime, index) => {
-                        const formattedTime = convertTo12Hour(
-                          availableTime.time
-                        );
+            <div className="overflow-y-auto">
+              {doctorDetails && (
+                <div className="p-5 bg-gray-100 rounded-lg my-1">
+                  <h4 className="font-semibold text-lg mb-2">Doctor Details:</h4>
+                  <p>
+                    <strong>Description:</strong> {doctorDetails?.description}
+                  </p>
+                  <p>
+                    <strong>Specialization:</strong>{" "}
+                    {doctorDetails.specialization}
+                  </p>
+                  <p>
+                    <strong>Address:</strong> {doctorDetails?.address?.street}
+                    {", "}
+                    {doctorDetails.address?.city} {", "}
+                    {doctorDetails.address?.state}
+                  </p>
+                </div>
+              )}
+              {availableTimes.length > 0 && (
+                <>
+                  <div className="grid grid-cols-3 gap-4 mt-0">
+                    <div className="mt-4">
+                      <h3 className="text-lg font-semibold">Available Times:</h3>
+                      <div className="grid grid-cols-3 gap-4 mt-2">
+                        {availableTimes.map((availableTime, index) => {
+                          const formattedTime = convertTo12Hour(
+                            availableTime.time
+                          );
 
-                        return (
-                          <button
-                            key={index}
-                            className={`p-4 rounded-lg text-center cursor-pointer ${
-                              selectedTimeId === availableTime._id
-                                ? "bg-blue-500 text-white"
-                                : "bg-blue-200 hover:bg-blue-300"
-                            }`}
-                            onClick={(e) => {
-                              console.log(availableTime, "available time");
-                              handleTimeSelect(
-                                e,
-                                availableTime._id,
-                                availableTime.time,
-                                availableTime.fee
-                              );
-                            }}
-                          >
-                            {formattedTime}
-                          </button>
-                        );
-                      })}
+                          return (
+                            <button
+                              key={index}
+                              className={`p-4 rounded-lg text-center cursor-pointer ${selectedTimeId === availableTime._id
+                                  ? "bg-blue-500 text-white"
+                                  : "bg-blue-200 hover:bg-blue-300"
+                                }`}
+                              onClick={(e) => {
+                                console.log(availableTime, "available time");
+                                handleTimeSelect(
+                                  e,
+                                  availableTime._id,
+                                  availableTime.time,
+                                  availableTime.fee
+                                );
+                              }}
+                            >
+                              {formattedTime}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {errors.appointmentTimeId && (
+                        <p className="text-red-500 mt-2">
+                          {errors.appointmentTimeId}
+                        </p>
+                      )}
                     </div>
-                    {errors.appointmentTimeId && (
-                      <p className="text-red-500 mt-2">
-                        {errors.appointmentTimeId}
-                      </p>
+                  </div>
+                  <div>
+                    <p>Enter Reason:</p>
+                    <textarea
+                      value={reason}
+                      onChange={(e) => {
+                        setReason(e.target.value);
+                        setErrors({ ...errors, reason: "" });
+                      }}
+                      className="flex h-20 w-[90%] rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                      type="text"
+                      placeholder="Reason"
+                    ></textarea>
+                    {errors.reason && (
+                      <p className="text-red-500">{errors.reason}</p>
                     )}
                   </div>
-                </div>
-                <div>
-                  <p>Enter Reason:</p>
-                  <textarea
-                    value={reason}
-                    onChange={(e) => {
-                      setReason(e.target.value);
-                      setErrors({ ...errors, reason: "" });
-                    }}
-                    className="flex h-20 w-[90%] rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                    type="text"
-                    placeholder="Reason"
-                  ></textarea>
-                  {errors.reason && (
-                    <p className="text-red-500">{errors.reason}</p>
-                  )}
-                </div>
-              </>
-            )}
-            {availableTimes.length === 0 && searchFlag && (
-              <p>
-                No available times found for this doctor on the specified date
-              </p>
-            )}
-            {/* Additional form fields */}
-            {availableTimes.length > 0 && (
-              <button
-                onClick={handleSubmit}
-                className="bg-black w-[95%] text-white p-2 rounded-full"
-              >
-                Book Now
-              </button>
-            )}
+                </>
+              )}
+              {availableTimes.length === 0 && searchFlag && (
+                <p>
+                  No available times found for this doctor on the specified date
+                </p>
+              )}
+              {/* Additional form fields */}
+              {availableTimes.length > 0 && (
+                <button
+                  onClick={handleSubmit}
+                  className="bg-black w-[95%] text-white p-2 rounded-full"
+                >
+                  Book Now
+                </button>
+              )}
+            </div>
           </form>
           {/* Display Doctor Details and Available Times */}
         </div>

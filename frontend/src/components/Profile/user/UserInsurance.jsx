@@ -8,39 +8,41 @@ import Swal from "sweetalert2";
 function UserMedication() {
   const userData = JSON.parse(localStorage.getItem("user"));
 
-  const [insurances, setInsurances] = useState();
+  const [insurances, setInsurances] = useState([]);
   const [company, setCompany] = useState("");
   const [type, setType] = useState("dental");
   const [validity, setValidity] = useState();
   const [outOfThePocket, setOutOfThePocket] = useState(0);
   const [coverage, setCoverage] = useState();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:4451/user/get-medications/${userData.email}`
-        );
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     console.log(userData.email)
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:4451/user/get-medications/${userData.email}`
+  //       );
 
-        const data = response.data;
+  //       const data = response.data;
 
-        const medicationsArray = data.map(({ medications }) => medications);
+  //       const medicationsArray = data.map(({ medications }) => medications);
 
-        const detailsArray = medicationsArray.map((medications) =>
-          medications.map(({ name, dosage, frequency }) => ({
-            name,
-            dosage,
-            frequency,
-          }))
-        );
+  //       const detailsArray = medicationsArray.map((medications) =>
+  //         medications.map(({ name, dosage, frequency }) => ({
+  //           name,
+  //           dosage,
+  //           frequency,
+  //         }))
+  //       );
 
-        setInsurances(detailsArray);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  //       setInsurances(detailsArray);
+  //       console.log(insurances, detailsArray)
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const addInsurance = async () => {
     try {
@@ -120,6 +122,7 @@ function UserMedication() {
   useEffect(() => {
     getInsurance();
   }, []);
+  console.log(insurances)
   return (
     <section className="bg-slate-300 flex justify-center items-center">
       <div className="h-[80%] w-[80%] bg-white shadow-xl p-2 flex">
@@ -196,7 +199,7 @@ function UserMedication() {
             {!insurances ? (
               <p>No Insurance</p>
             ) : (
-              <div className="relative overflow-auto shadow-md sm:rounded-lg">
+              <div className="relative overflow-y-auto shadow-md sm:rounded-lg">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -221,7 +224,7 @@ function UserMedication() {
                     </tr>
                   </thead>
                   <tbody>
-                    {insurances.map((insurance, index) => {
+                    {insurances?.map((insurance, index) => {
                       return (
                         <tr key={index}>
                           <td scope="col" className="px-6 py-3">

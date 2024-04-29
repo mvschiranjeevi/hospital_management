@@ -128,7 +128,7 @@ function AdminNurse() {
         <AdminSidebar userName={"Admin"} profiePic={profiePic} />
         <div className=" w-[70%] ms-24 p-4 flex flex-col justify-start gap-5 ">
           <p className="font-semibold text-3xl">Nurses</p>
-          <div className="w-full">
+          <div className="w-full overflow-y-auto">
             <div className="relative overflow-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

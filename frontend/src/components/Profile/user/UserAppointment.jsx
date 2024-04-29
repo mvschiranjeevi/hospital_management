@@ -99,7 +99,7 @@ function UserAppointment() {
           style={{ alignItems: "center", paddingTop: "4rem" }}
         >
           <p className="font-semibold text-3xl">Appointmnets</p>
-          <div className="w-full">
+          <div className="w-full overflow-y-auto">
             <div className="relative overflow-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-left rtl:text-right">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

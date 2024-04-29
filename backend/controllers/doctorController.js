@@ -69,12 +69,12 @@ router.post("/add-doctor", async (req, res) => {
         .json({ error: "Doctor with this email already exists" });
     }
     const lastDoctor = await Doctor.findOne().sort({ doctorId: -1 });
+    console.log(lastDoctor)
     let doctorId;
     if (lastDoctor) {
-      const lastDoctorId = parseInt(lastDoctor.doctorId, 10);
-      doctorId = (lastDoctorId + 1).toString();
+      doctorId = lastDoctor.doctorId + 1
     } else {
-      doctorId = "1";
+      doctorId = 1;
     }
     const firstemail = email.split("@")[0];
     const password = firstemail + "@123";
